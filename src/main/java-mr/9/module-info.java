@@ -18,5 +18,7 @@
  * See package documentation for more information.
  */
 module one.util.streamex {
+  // The module declaration is already compatible with Java 11
+  // No changes needed as the simple exports statement works the same in Java 11
   exports one.util.streamex;
 }
