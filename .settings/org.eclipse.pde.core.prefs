@@ -1,2 +1,3 @@
 BUNDLE_ROOT_PATH=target/classes
 eclipse.preferences.version=1
+# No changes needed for Java 11 upgrade
