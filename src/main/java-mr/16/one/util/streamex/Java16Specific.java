@@ -56,7 +56,7 @@ import java.util.stream.Stream;
 
   @Override
   <T, R> StreamEx<R> callMapMulti(AbstractStreamEx<T, ?> s, BiConsumer<? super T, ? super Consumer<R>> mapper) {
-    return new StreamEx<>(s.stream().mapMulti(mapper), s.context);
+    return new StreamEx<>(s.stream().<R>mapMulti(mapper), s.context);
   }
 
   @Override
