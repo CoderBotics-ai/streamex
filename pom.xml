@@ -118,8 +118,6 @@
               <sources>
                 <source>src/main/java-mr/9</source>
                 <source>src/main/java-mr/16</source>
-                <source>src/main/java-mr/21</source>
-                <!-- Add new multi-release source directories here if needed for Java 21+ features -->
               </sources>
             </configuration>
           </execution>
@@ -168,20 +166,6 @@
               </compileSourceRoots>
             </configuration>
           </execution>
-          <!-- Add new execution blocks here if compiling specific classes for Java 21+ -->
-          <execution>
-            <id>java21</id>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-            <configuration>
-              <release>21</release>
-              <multiReleaseOutput>true</multiReleaseOutput>
-              <compileSourceRoots>
-                <compileSourceRoot>${project.basedir}/src/main/java-mr/21</compileSourceRoot>
-              </compileSourceRoots>
-            </configuration>
-          </execution>
         </executions>
       </plugin>
       <plugin>
@@ -198,7 +182,7 @@
             <configuration>
               <!-- Updated source level for Javadoc generation -->
               <source>21</source>
-              <sourcepath>${project.build.sourceDirectory};${project.basedir}/src/main/java-mr/9;${project.basedir}/src/main/java-mr/16;${project.basedir}/src/main/java-mr/21</sourcepath>
+              <sourcepath>${project.build.sourceDirectory};${project.basedir}/src/main/java-mr/9;${project.basedir}/src/main/java-mr/16</sourcepath>
               <excludePackageNames>java.util.stream</excludePackageNames>
               <additionalOptions>-Xdoclint:all</additionalOptions>
               <noqualifier>all</noqualifier>
@@ -259,18 +243,9 @@
                         <fileset dir="${basedir}/src/main/java-mr/16"/>
                       </sourcefiles>
                     </group>
-                    <!-- Add new groups here if reporting on Java 21+ specific code -->
-                    <group name="src/main/java-mr/21">
-                      <classfiles>
-                        <fileset dir="${basedir}/target/classes/META-INF/versions/21"/>
-                      </classfiles>
-                      <sourcefiles>
-                        <fileset dir="${basedir}/src/main/java-mr/21"/>
-                      </sourcefiles>
-                    </group>
                   </structure>
-                  <html destdir="${basedir}/target/site/jacoco"/>
-                  <xml destfile="${basedir}/target/site/jacoco/jacoco.xml"/>
+                  <html destdir="${basedir}/target/jacoco"/>
+                  <xml destfile="${basedir}/target/jacoco/jacoco.xml"/>
                   <check>
                     <rule element="BUNDLE">
                       <limit counter="COMPLEXITY" value="COVEREDRATIO" minimum="0.95"/>
@@ -391,16 +366,6 @@
             </goals>
             <!-- No specific classesDirectory needed, Surefire handles MR JARs -->
             <!-- Ensure the JVM running Maven/Surefire is Java 21+ -->
-          </execution>
-          <execution>
-            <id>java21-test</id>
-            <configuration>
-              <classesDirectory>${basedir}/target/classes/META-INF/versions/21</classesDirectory>
-              <additionalClasspathElements>${project.build.outputDirectory}</additionalClasspathElements>
-            </configuration>
-            <goals>
-              <goal>test</goal>
-            </goals>
           </execution>
         </executions>
       </plugin>
