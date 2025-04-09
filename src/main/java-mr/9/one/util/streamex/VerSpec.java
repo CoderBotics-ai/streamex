@@ -20,5 +20,9 @@ package one.util.streamex;
  * @author Tagir Valeev
  */
 /* package */ interface VerSpec {
+   // Java 21 Compatibility Check:
+   // This interface and its initialization of VersionSpecific remain compatible with Java 21.
+   // The underlying implementation (Java9Specific) needs separate verification,
+   // but the structure here requires no changes for the Java 17 to 21 upgrade.
    VersionSpecific VER_SPEC = new Java9Specific();
 }

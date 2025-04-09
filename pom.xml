@@ -20,7 +20,7 @@
 
   <groupId>one.util</groupId>
   <artifactId>streamex</artifactId>
-  <version>0.8.3</version>
+  <version>0.8.3</version> <!-- Consider updating version for Java 21 release -->
   <packaging>jar</packaging>
 
   <name>StreamEx</name>
@@ -36,8 +36,11 @@
     <repository.url>git@github.com:${project.github.repository}.git</repository.url>
     <nexus.url>https://oss.sonatype.org</nexus.url>
     <license.url>https://www.apache.org/licenses/LICENSE-2.0</license.url>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <!-- Updated Java version properties for Java 21 -->
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
+    <!-- Define Jacoco version property for consistency -->
+    <jacoco.version>0.8.12</jacoco.version>
   </properties>
 
   <licenses>
@@ -63,7 +66,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13.2</version>
+      <version>4.13.2</version> <!-- Consider upgrading to JUnit 5 -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -80,7 +83,8 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M2</version>
+        <!-- Updated plugin version -->
+        <version>3.4.1</version>
         <executions>
           <execution>
             <id>enforce-java</id>
@@ -90,7 +94,8 @@
             <configuration>
               <rules>
                 <requireJavaVersion>
-                  <version>17</version>
+                  <!-- Updated required Java version to 21 -->
+                  <version>21</version>
                 </requireJavaVersion>
               </rules>
             </configuration>
@@ -100,10 +105,11 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.0.0</version>
+        <!-- Updated plugin version -->
+        <version>3.6.0</version>
         <executions>
           <execution>
-            <phase>test</phase>
+            <phase>test</phase> <!-- Consider moving to generate-sources or initialize phase -->
             <goals>
               <goal>add-source</goal>
             </goals>
@@ -120,16 +126,19 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
+        <!-- Updated plugin version for better Java 21 support -->
+        <version>3.13.0</version>
         <configuration>
           <!-- javadoc plugin uses this to detect JDK URL -->
           <source>${maven.compiler.source}</source>
-          <release>8</release>
+          <!-- Updated base release level to 21 -->
+          <release>21</release>
           <compilerArgs>
             <arg>-Xlint:all</arg>
           </compilerArgs>
         </configuration>
         <executions>
+          <!-- Multi-release compilation for Java 9 specific classes -->
           <execution>
             <id>java9</id>
             <goals>
@@ -143,6 +152,7 @@
               </compileSourceRoots>
             </configuration>
           </execution>
+          <!-- Multi-release compilation for Java 16 specific classes -->
           <execution>
             <id>java16</id>
             <goals>
@@ -161,7 +171,8 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.0.1</version>
+        <!-- Updated plugin version for better Java 21 support -->
+        <version>3.6.3</version>
         <executions>
           <execution>
             <id>attach-javadocs</id>
@@ -169,6 +180,8 @@
               <goal>jar</goal>
             </goals>
             <configuration>
+              <!-- Updated source level for Javadoc generation -->
+              <source>21</source>
               <sourcepath>${project.build.sourceDirectory};${project.basedir}/src/main/java-mr/9;${project.basedir}/src/main/java-mr/16</sourcepath>
               <excludePackageNames>java.util.stream</excludePackageNames>
               <additionalOptions>-Xdoclint:all</additionalOptions>
@@ -182,13 +195,14 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.8</version>
+        <version>1.8</version> <!-- Keep version or update if needed, 3.1.0 is latest -->
         <dependencies>
           <dependency>
             <groupId>org.jacoco</groupId>
             <artifactId>org.jacoco.ant</artifactId>
             <classifier>nodeps</classifier>
-            <version>0.8.10</version>
+            <!-- Updated Jacoco version to match jacoco-maven-plugin -->
+            <version>${jacoco.version}</version>
           </dependency>
         </dependencies>
         <executions>
@@ -230,8 +244,8 @@
                       </sourcefiles>
                     </group>
                   </structure>
-                  <html destdir="${basedir}/target/site/jacoco"/>
-                  <xml destfile="${basedir}/target/site/jacoco/jacoco.xml"/>
+                  <html destdir="${basedir}/target/jacoco"/>
+                  <xml destfile="${basedir}/target/jacoco/jacoco.xml"/>
                   <check>
                     <rule element="BUNDLE">
                       <limit counter="COMPLEXITY" value="COVEREDRATIO" minimum="0.95"/>
@@ -249,7 +263,8 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>3.0.1</version>
+        <!-- Updated plugin version -->
+        <version>3.3.1</version>
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -262,7 +277,8 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>2.4</version>
+        <!-- Updated plugin version -->
+        <version>3.4.1</version>
         <configuration>
           <archive>
             <manifestEntries>
@@ -281,7 +297,8 @@
       <plugin>
         <groupId>org.sonatype.plugins</groupId>
         <artifactId>nexus-staging-maven-plugin</artifactId>
-        <version>1.6.13</version>
+        <!-- Updated plugin version -->
+        <version>1.7.0</version>
         <extensions>true</extensions>
         <configuration>
           <serverId>ossrh</serverId>
@@ -292,7 +309,8 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-gpg-plugin</artifactId>
-        <version>1.6</version>
+        <!-- Updated plugin version -->
+        <version>3.2.4</version>
         <configuration>
           <skip>true</skip>
         </configuration>
@@ -309,43 +327,53 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M3</version>
+        <!-- Updated plugin version for better Java 21 support -->
+        <version>3.2.5</version>
         <configuration>
           <useModulePath>false</useModulePath>
+          <!-- Ensure tests run on Java 21 by default unless overridden -->
         </configuration>
         <executions>
+          <!-- Test execution using Java 16 specific classes -->
           <execution>
-            <id>default-test</id>
+            <id>java16-test</id>
             <configuration>
               <classesDirectory>${basedir}/target/classes/META-INF/versions/16</classesDirectory>
               <additionalClasspathElements>${project.build.outputDirectory}</additionalClasspathElements>
+              <!-- Potentially force JVM if needed: <jvm>${env.JAVA_HOME_16}/bin/java</jvm> -->
             </configuration>
             <goals>
               <goal>test</goal>
             </goals>
           </execution>
+          <!-- Test execution using Java 9 specific classes -->
           <execution>
             <id>java9-test</id>
             <configuration>
               <classesDirectory>${basedir}/target/classes/META-INF/versions/9</classesDirectory>
               <additionalClasspathElements>${project.build.outputDirectory}</additionalClasspathElements>
+              <!-- Potentially force JVM if needed: <jvm>${env.JAVA_HOME_9}/bin/java</jvm> -->
             </configuration>
             <goals>
               <goal>test</goal>
             </goals>
           </execution>
+          <!-- Default test execution (now implicitly Java 21 base + MR JAR structure) -->
           <execution>
-            <id>java8-test</id>
+            <id>default-test</id>
             <goals>
               <goal>test</goal>
             </goals>
+            <!-- No specific classesDirectory needed, Surefire handles MR JARs -->
+            <!-- Ensure the JVM running Maven/Surefire is Java 21+ -->
           </execution>
         </executions>
       </plugin>
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.7</version>
+        <!-- Updated Jacoco version -->
+        <version>${jacoco.version}</version>
         <executions>
           <execution>
             <id>default-prepare-agent</id>
@@ -358,19 +386,27 @@
       <plugin>
         <groupId>org.eluder.coveralls</groupId>
         <artifactId>coveralls-maven-plugin</artifactId>
-        <version>4.3.0</version>
+        <version>4.3.0</version> <!-- Keep version or update if needed -->
         <dependencies>
+          <!-- JAXB dependency might not be needed with newer JDKs/plugins, remove if build succeeds without it -->
           <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
-            <version>2.2.3</version>
+            <version>2.3.1</version> <!-- Updated JAXB API version -->
           </dependency>
         </dependencies>
+        <configuration>
+             <!-- Ensure the path to the jacoco report is correct -->
+             <jacocoReports>
+                 <jacocoReport>${basedir}/target/site/jacoco/jacoco.xml</jacocoReport>
+             </jacocoReports>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.jreleaser</groupId>
         <artifactId>jreleaser-maven-plugin</artifactId>
-        <version>0.9.1</version>
+        <!-- Updated plugin version -->
+        <version>1.12.0</version>
         <configuration>
           <jreleaser>
             <project>
@@ -379,7 +415,7 @@
             <release>
               <github>
                 <tagName>streamex-{{projectVersion}}</tagName>
-                <branch>master</branch>
+                <branch>master</branch> <!-- Consider updating to 'main' if that's your default branch -->
                 <changelog>
                   <formatted>ALWAYS</formatted>
                   <format>- {{commitShortHash}} {{commitTitle}}</format>

@@ -10,7 +10,7 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
+ * See the License governing permissions and
  * limitations under the License.
  */
 package one.util.streamex;
@@ -28,6 +28,13 @@ import java.util.stream.Stream;
  * @author Tagir Valeev
  */
 /* package */ class Java9Specific extends VersionSpecific {
+    // Java 21 compatibility check:
+    // The methods used here (Stream.dropWhile, Stream.takeWhile, IntStream.dropWhile,
+    // IntStream.takeWhile, LongStream.dropWhile, LongStream.takeWhile,
+    // DoubleStream.dropWhile, DoubleStream.takeWhile, CharSequence.chars)
+    // were introduced in Java 9 and remain standard, non-deprecated APIs in Java 21.
+    // No code changes are required for Java 21 compatibility.
+
     @Override
     <T, S extends AbstractStreamEx<T, S>> S callWhile(AbstractStreamEx<T, S> stream, Predicate<? super T> predicate, boolean drop) {
         Stream<T> upStream = stream.stream();

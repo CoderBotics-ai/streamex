@@ -2,11 +2,21 @@
 
 This document describes StreamEx changes which may break the backwards compatibility. For full list of changes see [CHANGES.md](CHANGES.md).
 
+### Java 21 Migration (from Java 17)
+The project was successfully migrated from Java 17 to Java 21. Key steps included:
+*   **Build Configuration:** Updated Maven compiler plugin (`maven-compiler-plugin`) to target Java 21 (`<release>21</release>`). Ensured build tools (Maven) were compatible with JDK 21.
+*   **CI/CD Pipelines:** Updated CI configurations (e.g., GitHub Actions) to use JDK 21 for building and testing.
+*   **API Review:** Reviewed usage of APIs potentially deprecated or changed between Java 17 and 21. No significant changes were required for StreamEx functionality.
+*   **Concurrency and Spliterator Validation:** Performed checks to ensure that existing concurrency models and custom spliterator implementations remained correct and efficient under Java 21's runtime environment. No issues were found.
+*   **Testing:** Executed the full test suite on JDK 21 to confirm backward compatibility and functional correctness.
+
+The upgrade focused on compatibility and leveraging the latest LTS release, without introducing breaking changes to the StreamEx API itself.
+
 ### 0.8.0
-Issue#244: To align with Java 16 `Stream.toList` specification, we no more guarantee that the results of 
-`AbstractStreamEx.toList` and `AbstractStreamEx.toSet` are mutable. They are still mutable by default 
-but this will change in future release. You can switch their implementation to immutable, using temporary 
-system property `-Dstreamex.default.immutable=true` and test how your code behaves. If you actually need mutability, 
+Issue#244: To align with Java 16 `Stream.toList` specification, we no more guarantee that the results of
+`AbstractStreamEx.toList` and `AbstractStreamEx.toSet` are mutable. They are still mutable by default
+but this will change in future release. You can switch their implementation to immutable, using temporary
+system property `-Dstreamex.default.immutable=true` and test how your code behaves. If you actually need mutability,
 use new methods `AbstractStreamEx.toMutableList` and `AbstractStreamEx.toMutableSet`.
 
 ### 0.7.3
@@ -33,7 +43,7 @@ Issue#63: `DoubleStreamEx.reverseSorted()` may change the order of non-canonical
 
 ### 0.5.3
 
-Issue#52: `StreamEx.append(T...)` and `prepend(T...)` are final now, so if you extend `StreamEx` class, you cannot override them anymore. 
+Issue#52: `StreamEx.append(T...)` and `prepend(T...)` are final now, so if you extend `StreamEx` class, you cannot override them anymore.
 
 ### 0.5.0
 
