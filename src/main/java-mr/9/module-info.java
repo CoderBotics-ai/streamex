@@ -18,5 +18,14 @@
  * See package documentation for more information.
  */
 module one.util.streamex {
+  requires java.base;
   exports one.util.streamex;
+  // No changes needed for Java 21 compatibility based on the provided instructions.
+  // The module exports its public API package 'one.util.streamex'.
+  // If specific parts of the application or dependent libraries require
+  // deep reflective access to the internals of this package (which is generally
+  // discouraged), an 'opens one.util.streamex;' directive could be added here,
+  // or '--add-opens one.util.streamex=ALL-UNNAMED' could be used as a command-line
+  // argument at runtime. However, without a specific requirement, exporting
+  // the package is sufficient for standard usage and maintains strong encapsulation.
 }
