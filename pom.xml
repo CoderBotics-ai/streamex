@@ -102,27 +102,6 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <!-- Updated version -->
-        <version>3.5.0</version>
-        <executions>
-          <execution>
-            <phase>generate-sources</phase> <!-- Changed phase to standard practice -->
-            <goals>
-              <goal>add-source</goal>
-            </goals>
-            <configuration>
-              <!-- Necessary to add sources to the source-jar -->
-              <sources>
-                <source>src/main/java-mr/9</source>
-                <source>src/main/java-mr/16</source>
-              </sources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <!-- Updated version for Java 21 compatibility -->
@@ -219,6 +198,8 @@
           </dependency>
         </dependencies>
         <executions>
+          <!-- REMOVE START: jacoco-report execution block -->
+          <!--
           <execution>
             <id>jacoco-report</id>
             <phase>prepare-package</phase>
@@ -279,6 +260,8 @@
               <goal>run</goal>
             </goals>
           </execution>
+          -->
+          <!-- REMOVE END: jacoco-report execution block -->
         </executions>
       </plugin>
       <plugin>
@@ -388,6 +371,55 @@
               <goal>prepare-agent</goal>
             </goals>
           </execution>
+          <!-- ADD START: report and check goals -->
+          <execution>
+            <id>default-report</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <!-- ADD START: Exclude MR classes from report -->
+            <configuration>
+              <excludes>
+                <exclude>META-INF/versions/**</exclude>
+              </excludes>
+            </configuration>
+            <!-- ADD END: Exclude MR classes from report -->
+          </execution>
+          <execution>
+            <id>default-check</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <!-- ADD: Exclude MR classes from check -->
+              <excludes>
+                <exclude>META-INF/versions/**</exclude>
+              </excludes>
+              <!-- END ADD -->
+              <rules>
+                <rule>
+                  <element>BUNDLE</element>
+                  <limits>
+                    <!-- Use instruction counter for broader coverage metric -->
+                    <limit>
+                      <counter>INSTRUCTION</counter>
+                      <value>COVEREDRATIO</value>
+                      <!-- Adjust minimum coverage ratio as needed -->
+                      <minimum>0.90</minimum>
+                    </limit>
+                    <!-- Keep complexity check if desired, using same ratio from Ant -->
+                    <limit>
+                      <counter>COMPLEXITY</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>0.95</minimum>
+                    </limit>
+                  </limits>
+                </rule>
+              </rules>
+            </configuration>
+          </execution>
+          <!-- ADD END: report and check goals -->
         </executions>
       </plugin>
       <plugin>
